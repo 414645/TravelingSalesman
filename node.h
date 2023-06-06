@@ -28,6 +28,9 @@ public:
   //might want red and back for traveling saleman
   int getColor();
   void setColor(int);
+  //yes this is lazy but dont want two sets of nodes
+  Node* first;
+  Node* last;
 private:
   Node* nextNode;
   int number;
