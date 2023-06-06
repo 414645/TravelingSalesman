@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-
+#include "node.h"
 
 using namespace std;
 
@@ -10,6 +10,11 @@ using namespace std;
 
 //going to need some sort of linked list
 //void
+
+//going to want a list of nodes
+//and a list of edges, list of nodes
+//Nodes need to know value, Edges need to know 2 noedes and value
+//means we need three classese, Edge, Node and then the linked list one
 
 int main() {
   cout << "hello world" << endl;
