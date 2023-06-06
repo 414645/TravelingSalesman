@@ -18,11 +18,9 @@ struct path{
 
 
 //going to need some sort of linked list
-void addEdge(Node* edge, Node* root);
-void removeEdge(Node* edge, Node* root);
 bool findEdge(Node* firstNode, Node* secondNode, Node* root);
-void addNode(Node* node, Node* root);
-void removeNode(Node* node, Node* root);
+void addThing(Node* node, Node* &root, Node* current);
+void removeThing(Node* node, Node* &root, Node* current, Node* previous);
 bool findNode(int nodeId, Node* root);
 
 //going to want a list of nodes
@@ -96,24 +94,36 @@ int main() {
   } 
 }
 
-void addEdge(Node* edge, Node* root) {
-  //go thought list and add it to end
-}
-
-void removeEdge(Node* edge, Node* root) {
-  //go though list to find a ege and remove it
-}
-
 bool findEdge(Node* firstNode, Node* secondNode, Node* root) {
   //go though list, if a edge exiss that connects nodes return true
   return false;
 }
 
-void addNode(Node* node, Node* root) {
+void addThing(Node* node, Node* &root, Node* current) {
   //add a node to the ll, might be same as add edge like exact same
+  if (root == NULL) {
+    root = node;
+  }
+  else if(current->getNext() == NULL) {
+    current->setNext(node);
+  }
+  else {
+    addThing(node, root, current->getNext());
+  }
 }
-void removeNode(Node* node, Node* root) {
-  //redundant
+void removeThing(Node* node, Node* &root, Node* current, Node* previous) {
+  //go though list, find and remove
+  if(root == node) {
+    root = root->getNext();
+    delete node;
+  }
+  else if (current == node) {
+    previous->setNext(current->getNext());
+    delete current;
+  }
+  else if (current->getNext() != NULL) {
+    removeThing(node, root, current->getNext(), current);
+  }
 }
 
 bool findNode(int nodeId, Node* root) {
