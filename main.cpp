@@ -65,8 +65,9 @@ int main() {
     if (strcmp(input, "PRINT") == 0) {
       cout << "Edgelist (1) or Nodelist (2)?" << endl;
       //print edge or nodes?
-      cin.getline(input, 80);
-      if (input == "1" || input == "E" || input == "e") {
+      int UI = 0;
+      cin >> UI;
+      if (UI == 1) {
 	//edgelist
 	cout << "Print Edgelist: " << endl;
 	printEdge(edgeRoot);
@@ -281,9 +282,19 @@ Node* returnEdge(Node* firstNode, Node* secondNode, Node* current) {
 
 
 void printNode(Node* current) {
-  
+  if (current != NULL) {
+    cout << "Current: " << current->getNumber() << endl;
+    
+  printNode(current->getNext());
+  }
 }
 
 void printEdge(Node* current) {
-  
+  if (current != NULL) {
+    cout << "Current: " << current << endl;
+    cout << "       " << current->first->getNumber() << endl;
+    cout << "       " << current->last->getNumber() << endl;
+    
+  printEdge(current->getNext());
+  }
 }
