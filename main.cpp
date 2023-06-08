@@ -18,7 +18,7 @@ struct path{
 
 
 //going to need some sort of linked list
-bool findEdge(Node* firstNode, Node* secondNode, Node* root);
+bool findEdge(Node* firstNode, Node* secondNode, Node* current);
 void addThing(Node* node, Node* &root, Node* current);
 void removeThing(Node* node, Node* &root, Node* current, Node* previous);
 bool findNode(int nodeId, Node* root);
@@ -53,7 +53,15 @@ int main() {
       cout << "QUIT" << endl;
     }
     if (strcmp(input, "PRINT") == 0) {
-      cout << "What?" << endl;
+      cout << "Edgelist (1) or Nodelist (2)?" << endl;
+      //print edge or nodes?
+      cin.getline(input, 80);
+      if (input == "1" || input == "E" || input == "e") {
+	//edgelist
+      }
+      else {
+	//nodelist
+      }
     }
     if (strcmp(input, "Add Vertex") == 0) {
       cout << "A V" << endl;
@@ -94,9 +102,21 @@ int main() {
   } 
 }
 
-bool findEdge(Node* firstNode, Node* secondNode, Node* root) {
+bool findEdge(Node* firstNode, Node* secondNode, Node* current) {
   //go though list, if a edge exiss that connects nodes return true
-  return false;
+  if (current != NULL) {
+    if (current->first == firstNode ||
+	current->first == secondNode) {
+      if (current->last == firstNode ||
+	  current->last == secondNode) {
+	return true;
+      }
+    }
+    return findEdge(firstNode, secondNode, current->getNext());
+  }
+  else {
+    return false;
+  }
 }
 
 void addThing(Node* node, Node* &root, Node* current) {
@@ -126,7 +146,15 @@ void removeThing(Node* node, Node* &root, Node* current, Node* previous) {
   }
 }
 
-bool findNode(int nodeId, Node* root) {
+bool findNode(int nodeId, Node* current) {
   //return if a node with that id exits (id should be uniqe);
-  return false;
+  if (current != NULL) {
+    if (current->getNumber() == nodeId) {
+      return true;
+    }
+    return findNode(nodeId, current->getNext());
+  }
+  else {
+    return false;
+  }
 }
