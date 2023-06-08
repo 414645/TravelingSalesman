@@ -66,9 +66,19 @@ int main() {
     if (strcmp(input, "Add Vertex") == 0) {
       cout << "A V" << endl;
       //find id
+      cout << "what is the id of the vertex?" << endl;
+      int newid = 0;
+      cin >> newid;
       //check that is is unique ID
-      //create new node
-      //call add (add might be universal)
+      if (findNode(newid, nodeRoot) == true) {
+	cout << "choose a diferent id" << endl;
+      }
+      else {
+	//create new node
+	Node* temp = new Node(newid);
+	//call add (add might be universal)
+	addThing(temp, nodeRoot, nodeRoot);
+      }
     }
     if (strcmp(input, "Add Edge") == 0) {
       cout << "A E" << endl;

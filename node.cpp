@@ -4,12 +4,16 @@
 using namespace std;
 
 Node::Node() {
-  cout << "blank node created" << endl;
+  //this will actualy get used for edgelist
+  //cout << "blank node created" << endl;
   nextNode = NULL;
   number = -1;
   parent = NULL;
   color = -1;
-  
+
+  //needed for the quick way
+  first = NULL;
+  last = NULL;
 }
 Node::Node(int newNumber) {
   nextNode = NULL;
@@ -17,6 +21,11 @@ Node::Node(int newNumber) {
   //default parent to NULL and color to 0
   parent = NULL;
   color = 0;
+
+  
+  //needed for the quick way
+  first = NULL;
+  last = NULL;
 }
 
 Node::~Node() {
