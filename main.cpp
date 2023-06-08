@@ -24,7 +24,10 @@ void removeThing(Node* node, Node* &root, Node* current, Node* previous);
 bool findNode(int nodeId, Node* current);
 //same as find but retuns it, null in cant find
 Node* returnNode(int nodeId, Node* current);
+Node* returnEdge(Node* firstNode, Node* secondNode, Node* current);
 
+//go look at delvertex to see why this is needed
+void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot);
 
 //going to want a list of nodes
 //and a list of edges, list of nodes
@@ -111,14 +114,42 @@ int main() {
     }
     if (strcmp(input, "Remove Vertex") == 0) {
       cout << "R V" << endl;
+      cout << "what is the id of the vertex?" << endl;
+      int num = 0;
+      cin >> num;
+      
       //find it
+      Node* toDel = returnNode(num, nodeRoot);
       //go call remove on all edges attached to it
-      //call remove on it
+      if (toDel != NULL) {
+	//go cpy search to look for any one sided ones 
+	//lets just call remove on it there
+	nodeDelAlert(toDel, edgeRoot, edgeRoot, nodeRoot);
+      }
     }
     if (strcmp(input, "Remove Edge") == 0) {
       cout << "R E" << endl;
       //fnd it
-      //remove it
+      //same as adding here
+      int a = 0;
+      cout << "what is the id of the first node it connects to?" << endl;
+      cin >> a;
+      int b = 0;
+      cout << "what is the id of the second node it connects to?" << endl;
+      cin >> b;
+      //find it
+      Node* aNode = returnNode(a, nodeRoot);
+      Node* bNode = returnNode(b, nodeRoot);
+      //check that both nodes exist
+      if (aNode == NULL ||bNode == NULL || a == b) {
+	cout << "that is not allowed" << endl;
+	//im lazy for cout
+      }
+      //new code
+      Node* edge = returnEdge(aNode, bNode, edgeRoot);
+      
+      //now remove it
+      removeThing(edge, edgeRoot, edgeRoot, NULL);
     }
     if (strcmp(input, "Find Shortest Path") == 0) {
       int thing1;
@@ -198,6 +229,37 @@ Node* returnNode(int nodeId, Node* current) {
       return current;
     }
     return returnNode(nodeId, current->getNext());
+  }
+  else {
+    return NULL;
+  }
+}
+
+void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot) {
+  //go though list, if a edge exiss that connects nodes return true
+  if (current != NULL) {
+    if (current->first == toDel ||
+	current->last == toDel) {
+      //keep looking
+      nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
+      //then start del
+      removeThing(current, edgeRoot, edgeRoot, NULL);
+    }
+    nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
+  }
+}
+
+Node* returnEdge(Node* firstNode, Node* secondNode, Node* current) {
+  //go though list, if a edge exiss that connects nodes return true
+  if (current != NULL) {
+    if (current->first == firstNode ||
+	current->first == secondNode) {
+      if (current->last == firstNode ||
+	  current->last == secondNode) {
+	return current;
+      }
+    }
+    return returnEdge(firstNode, secondNode, current->getNext());
   }
   else {
     return NULL;
