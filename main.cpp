@@ -210,10 +210,13 @@ void addThing(Node* node, Node* &root, Node* current) {
 void removeThing(Node* node, Node* &root, Node* current, Node* previous) {
   //go though list, find and remove
   if(root == node) {
+    cout << "del root" << endl;
+    cout << root << ": " << root->getNext() << endl;
     root = root->getNext();
     delete node;
   }
   else if (current == node) {
+    cout << "del current" << endl;
     previous->setNext(current->getNext());
     delete current;
   }
@@ -253,9 +256,14 @@ void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot) {
   if (current != NULL) {
     if (current->first == toDel ||
 	current->last == toDel) {
+      
+      cout << toDel->getNumber() << ": " << current << endl;
+      
       //keep looking
       nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
       //then start del
+
+      cout << current << endl;
       removeThing(current, edgeRoot, edgeRoot, NULL);
     }
     nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
