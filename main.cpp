@@ -21,7 +21,10 @@ struct path{
 bool findEdge(Node* firstNode, Node* secondNode, Node* current);
 void addThing(Node* node, Node* &root, Node* current);
 void removeThing(Node* node, Node* &root, Node* current, Node* previous);
-bool findNode(int nodeId, Node* root);
+bool findNode(int nodeId, Node* current);
+//same as find but retuns it, null in cant find
+Node* returnNode(int nodeId, Node* current);
+
 
 //going to want a list of nodes
 //and a list of edges, list of nodes
@@ -83,9 +86,28 @@ int main() {
     if (strcmp(input, "Add Edge") == 0) {
       cout << "A E" << endl;
       //figure out what edge (add two nodes it is connecting)
+      //crate cpy of find node that returns node
+      int a = 0;
+      cout << "what is the id of the first node it connects to?" << endl;
+      cin >> a;
+      int b = 0;
+      cout << "what is the id of the second node it connects to?" << endl;
+      cin >> b;
+      //find it
+      Node* aNode = returnNode(a, nodeRoot);
+      Node* bNode = returnNode(b, nodeRoot);
       //check that both nodes exist
+      if (aNode == NULL ||bNode == NULL || a == b) {
+	cout << "that is not allowed" << endl;
+	//im lazy for cout
+      }
       //create a new edge
+      Node* temp = new Node();
+      temp->first = aNode;
+      temp->last = bNode;
+      
       //call add edge
+      addThing(temp, edgeRoot, edgeRoot);
     }
     if (strcmp(input, "Remove Vertex") == 0) {
       cout << "R V" << endl;
@@ -166,5 +188,18 @@ bool findNode(int nodeId, Node* current) {
   }
   else {
     return false;
+  }
+}
+
+Node* returnNode(int nodeId, Node* current) {
+  //return if a node with that id exits (id should be uniqe);
+  if (current != NULL) {
+    if (current->getNumber() == nodeId) {
+      return current;
+    }
+    return returnNode(nodeId, current->getNext());
+  }
+  else {
+    return NULL;
   }
 }
