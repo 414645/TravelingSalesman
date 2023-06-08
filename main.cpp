@@ -26,6 +26,10 @@ bool findNode(int nodeId, Node* current);
 Node* returnNode(int nodeId, Node* current);
 Node* returnEdge(Node* firstNode, Node* secondNode, Node* current);
 
+//prints
+void printNode(Node* current);
+void printEdge(Node* current);
+
 //go look at delvertex to see why this is needed
 void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot);
 
@@ -64,9 +68,14 @@ int main() {
       cin.getline(input, 80);
       if (input == "1" || input == "E" || input == "e") {
 	//edgelist
+	cout << "Print Edgelist: " << endl;
+	printEdge(edgeRoot);
       }
       else {
 	//nodelist
+	
+	cout << "Print Nodelist: " << endl;
+	printNode(nodeRoot);
       }
     }
     if (strcmp(input, "Add Vertex") == 0) {
@@ -125,6 +134,9 @@ int main() {
 	//go cpy search to look for any one sided ones 
 	//lets just call remove on it there
 	nodeDelAlert(toDel, edgeRoot, edgeRoot, nodeRoot);
+
+	//then delete it
+	removeThing(toDel, nodeRoot, nodeRoot, NULL);
       }
     }
     if (strcmp(input, "Remove Edge") == 0) {
@@ -264,4 +276,14 @@ Node* returnEdge(Node* firstNode, Node* secondNode, Node* current) {
   else {
     return NULL;
   }
+}
+
+
+
+void printNode(Node* current) {
+  
+}
+
+void printEdge(Node* current) {
+  
 }
