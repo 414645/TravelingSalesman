@@ -31,6 +31,7 @@ public:
   //yes this is lazy but dont want two sets of nodes
   Node* first;
   Node* last;
+  int distance;
 private:
   Node* nextNode;
   int number;

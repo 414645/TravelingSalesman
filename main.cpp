@@ -92,7 +92,7 @@ int main() {
     if (strcmp(input, "Add Vertex") == 0 || strcmp(input, "AV") == 0) {
       cout << "A V" << endl;
       //find id
-      cout << "what is the id of the vertex?" << endl;
+      cout << "what is numerical id of the vertex you want to add?" << endl;
       int newid = 0;
       cin >> newid;
       //check that is is unique ID
@@ -197,9 +197,27 @@ int main() {
 
 
 void dijkstra(Node* traveled, Node* current, Node* destination,
-	      Node* edgeRoot, Node* nodeRoot) {
-  //traveled is aready traveled nodes
+	      Node* edgeRoot, Node* nodeRoot, int currentPathLength) {
+  //traveled is a root;
   //Anywasy psudocode here:
+  //start by visting thing with shortest path
+  //then visit others for info of how far away it is
+  //then go the the one with shortest path from main
+
+  //I don't quite think think what I am doing is Dijstra since it would go
+  //to end of path first though so lets fix that
+  //I really dont want to keep track of a table so LL agian which is proably
+  //worse then just doing the other seach but thats the assignment
+  if (current == destination) {
+    //cout the path
+  }
+  else {
+    //go though everything connected to current and find shortest path
+    //update that
+    //keep updating for all connectos
+    //then go to the path
+  }
+  
 }
 
 int findLength(Node* current, int num) {

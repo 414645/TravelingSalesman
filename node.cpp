@@ -14,6 +14,7 @@ Node::Node() {
   //needed for the quick way
   first = NULL;
   last = NULL;
+  distance = -1;
 }
 Node::Node(int newNumber) {
   nextNode = NULL;
@@ -25,6 +26,7 @@ Node::Node(int newNumber) {
   //needed for the quick way
   first = NULL;
   last = NULL;
+    distance = -1;
 }
 
 Node::~Node() {
