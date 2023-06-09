@@ -21,7 +21,6 @@ Node::Node(int newNumber) {
   //default parent to NULL and color to 0
   parent = NULL;
   color = 0;
-
   
   //needed for the quick way
   first = NULL;

@@ -31,7 +31,7 @@ void printNode(Node* current);
 void printEdge(Node* current);
 
 //go look at delvertex to see why this is needed
-void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot);
+void nodeDelAlert(Node* toDel, Node* current, Node* &edgeRoot, Node* &nodeRoot);
 
 //going to want a list of nodes
 //and a list of edges, list of nodes
@@ -79,7 +79,7 @@ int main() {
 	printNode(nodeRoot);
       }
     }
-    if (strcmp(input, "Add Vertex") == 0) {
+    if (strcmp(input, "Add Vertex") == 0 || strcmp(input, "AV") == 0) {
       cout << "A V" << endl;
       //find id
       cout << "what is the id of the vertex?" << endl;
@@ -96,7 +96,7 @@ int main() {
 	addThing(temp, nodeRoot, nodeRoot);
       }
     }
-    if (strcmp(input, "Add Edge") == 0) {
+    if (strcmp(input, "Add Edge") == 0 || strcmp(input, "AE") == 0) {
       cout << "A E" << endl;
       //figure out what edge (add two nodes it is connecting)
       //crate cpy of find node that returns node
@@ -106,6 +106,9 @@ int main() {
       int b = 0;
       cout << "what is the id of the second node it connects to?" << endl;
       cin >> b;
+      cout << "what is the length of the edge?" << endl;
+      int c = 0;
+      cin >> c;
       //find it
       Node* aNode = returnNode(a, nodeRoot);
       Node* bNode = returnNode(b, nodeRoot);
@@ -118,11 +121,12 @@ int main() {
       Node* temp = new Node();
       temp->first = aNode;
       temp->last = bNode;
+      temp->setNumber(c);
       
       //call add edge
       addThing(temp, edgeRoot, edgeRoot);
     }
-    if (strcmp(input, "Remove Vertex") == 0) {
+    if (strcmp(input, "Remove Vertex") == 0 || strcmp(input, "RV") == 0) {
       cout << "R V" << endl;
       cout << "what is the id of the vertex?" << endl;
       int num = 0;
@@ -140,7 +144,7 @@ int main() {
 	removeThing(toDel, nodeRoot, nodeRoot, NULL);
       }
     }
-    if (strcmp(input, "Remove Edge") == 0) {
+    if (strcmp(input, "Remove Edge") == 0 || strcmp(input, "RE") == 0) {
       cout << "R E" << endl;
       //fnd it
       //same as adding here
@@ -209,18 +213,22 @@ void addThing(Node* node, Node* &root, Node* current) {
 }
 void removeThing(Node* node, Node* &root, Node* current, Node* previous) {
   //go though list, find and remove
+  cout << "rm" << endl;
   if(root == node) {
     cout << "del root" << endl;
-    cout << root << ": " << root->getNext() << endl;
+    cout << root->getNumber()  << ": " << root->getNext() << endl;
     root = root->getNext();
+    cout << root << endl;
     delete node;
+    return;
   }
   else if (current == node) {
     cout << "del current" << endl;
     previous->setNext(current->getNext());
     delete current;
   }
-  else if (current->getNext() != NULL) {
+  else if (current->getNext() != NULL && root != node) {
+    cout << "recirse" << endl;
     removeThing(node, root, current->getNext(), current);
   }
 }
@@ -251,20 +259,19 @@ Node* returnNode(int nodeId, Node* current) {
   }
 }
 
-void nodeDelAlert(Node* toDel, Node* current, Node* edgeRoot, Node* nodeRoot) {
+void nodeDelAlert(Node* toDel, Node* current, Node* &edgeRoot, Node* &nodeRoot) {
   //go though list, if a edge exiss that connects nodes return true
   if (current != NULL) {
     if (current->first == toDel ||
 	current->last == toDel) {
       
       cout << toDel->getNumber() << ": " << current << endl;
+
+      Node* next = current->getNext();
+      removeThing(current, edgeRoot, edgeRoot, NULL);
       
       //keep looking
-      nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
-      //then start del
-
-      cout << current << endl;
-      removeThing(current, edgeRoot, edgeRoot, NULL);
+      nodeDelAlert(toDel, next, edgeRoot, nodeRoot);
     }
     nodeDelAlert(toDel, current->getNext(), edgeRoot, nodeRoot);
   }
@@ -300,8 +307,13 @@ void printNode(Node* current) {
 void printEdge(Node* current) {
   if (current != NULL) {
     cout << "Current: " << current << endl;
-    cout << "       " << current->first->getNumber() << endl;
-    cout << "       " << current->last->getNumber() << endl;
+    cout << "Length " << current->getNumber() << endl;
+    if (current->first != NULL) {
+      cout << "A   " << current->first->getNumber() << endl;
+    }
+    if (current->last != NULL) {
+      cout << "B   " << current->last->getNumber() << endl;
+    }
     
   printEdge(current->getNext());
   }
