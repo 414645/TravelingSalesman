@@ -25,12 +25,22 @@ bool findNode(int nodeId, Node* current);
 //same as find but retuns it, null in cant find
 Node* returnNode(int nodeId, Node* current);
 Node* returnEdge(Node* firstNode, Node* secondNode, Node* current);
+//find length of LL
+int findLength(Node* current, int num);
+
+//this is dijkstra's, exept mostly just a redo of traveling saleman
+void dijkstra(Node* traveled, Node* current, Node* destination,
+	      Node* edgeRoot, Node* nodeRoot);
+//traveled is going to be a root of a LL of traveled nodes;
+//I don't tink the node LL is needed but pass it in anyway
 
 //prints
 void printNode(Node* current);
 void printEdge(Node* current);
 
 //go look at delvertex to see why this is needed
+//(it is a special vesion of find that finds all, since it is only
+//needed for one case it also cals delete)
 void nodeDelAlert(Node* toDel, Node* current, Node* &edgeRoot, Node* &nodeRoot);
 
 //going to want a list of nodes
@@ -176,10 +186,28 @@ int main() {
       cout << "Enter the second Node" << endl;
       cin >> thing2;
       
-      cout << thing1 << " " << thing2 << endl;
-      //call dijkstra's
+      cout << thing1 << " to " << thing2 << endl;
+      //call dijkstra's now we have all info
+      //for coding this it will be a seperate recusrive thing
+      //also will need its own root for a ll, (only use first to store)
+      //also need a find length
     }
   } 
+}
+
+
+void dijkstra(Node* traveled, Node* current, Node* destination,
+	      Node* edgeRoot, Node* nodeRoot) {
+  //traveled is aready traveled nodes
+  //Anywasy psudocode here:
+}
+
+int findLength(Node* current, int num) {
+  if (current != NULL) {
+    num++;
+    num = findLength(current->getNext(), num);
+  }
+  return num;
 }
 
 bool findEdge(Node* firstNode, Node* secondNode, Node* current) {
