@@ -358,9 +358,8 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
 	    if((temp->getNumber() < length || length == -1) &&
 	       findNode(temp, counter) != true) {
 	      //save its length and it
-
-	      //length = temp->getNumber();
-	      //edge = temp;
+	      length = temp->getNumber();
+	      edge = temp;
 	      //remove it form this search
 	      addThing(temp, counter, counter);
 	      
@@ -369,6 +368,8 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
 	  temp = temp->getNext();
 	}
       }
+      //no go to that one
+      
     }
     //keep updating for all connectos
     //then go to the path
