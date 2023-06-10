@@ -30,7 +30,7 @@ int findLength(Node* current, int num);
 
 //this is dijkstra's, exept mostly just a redo of traveling saleman
 void dijkstra(Node* traveled, Node* current, Node* destination,
-	      Node* edgeRoot, Node* nodeRoot);
+	      Node* edgeRoot, Node* nodeRoot, Node* start);
 //traveled is going to be a root of a LL of traveled nodes;
 //I don't tink the node LL is needed but pass it in anyway
 
@@ -197,7 +197,8 @@ int main() {
 
 
 void dijkstra(Node* traveled, Node* current, Node* destination,
-	      Node* edgeRoot, Node* nodeRoot, int currentPathLength) {
+	      Node* edgeRoot, Node* nodeRoot, int currentPathLength,
+	      Node* start) {
   //traveled is a root;
   //Anywasy psudocode here:
   //start by visting thing with shortest path
@@ -214,11 +215,48 @@ void dijkstra(Node* traveled, Node* current, Node* destination,
   else {
     //go though everything connected to current and find shortest path
     //update that
+    bool loop = true;
+    int length = -1;
+    while(loop == true) {
+      //find an edge
+      //see if it is shortest
+      //one all edges are on edges we are done;
+      Node* temp = edgeRoot;
+      Node* edge = NULL;
+      int b = findLength(edgeRoot, 0);
+	for(int a = 0; a < b; b++) {
+	  if(temp != NULL) {
+	    //is it connected?
+	    if(temp->first == current || temp->last == current) {
+	      //is it shorter
+	      if(temp->getNumber() < length || length == -1) {
+		//save its length and it
+		length = temp->getNumber();
+		edge = temp;
+	    }
+	    }
+	  }
+	}
+	//end of for loop
+	//we have found shortest edge
+	//go update that
+	
+	//edge
+	
+	
+    }
+    //end of while loop
+  
+
+
+    
     //keep updating for all connectos
     //then go to the path
   }
   
 }
+
+  
 
 int findLength(Node* current, int num) {
   if (current != NULL) {
