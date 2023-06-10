@@ -196,7 +196,7 @@ int main() {
 }
 
 
-void dijkstra(Node* traveled, Node* current, Node* destination,
+void dijkstra(Node* &traveled, Node* current, Node* destination,
 	      Node* edgeRoot, Node* nodeRoot, int currentPathLength,
 	      Node* start) {
   //traveled is a root;
@@ -240,9 +240,39 @@ void dijkstra(Node* traveled, Node* current, Node* destination,
 	//end of for loop
 	//we have found shortest edge
 	//go update that
+
+	//also yes this is most definetly an abomination
+	//but in my defence I was planning on doing a find the shortest path
+	//so have nothign planned for a table
+	if(findNode(current->getNumber(), traveled) == false) {
+	  //lets make first the current vertex
+	  //last the previous
+	  //and num the distance
+	  
+	  //ad it to LL
+	  Node* chaos = new Node();
+	  addThing(traveled, chaos, chaos);
+	  //set vertex
+	  if (current == edge->first) {
+	    chaos->first = edge->last;
+	  }
+	  else {
+	    chaos->first = edge->first;
+	  }
+	  //set previous
+	  //this is current since we did not actually move
+	  chaos->last = current;
+	  //set pathlength
+	  //this is just edge->getNumber + previous->getNumber
+	  chaos->setNumber(edge->getNumber() + chaos->last->getNumber());
+	}
+	else {
+	  cout << "update" << endl;
+	  //update its value (wierd case) for if its better
+	}
 	
-	//edge
-	
+	//now we need to check if we have gone thought all connections
+	//if so we exit the loop
 	
     }
     //end of while loop
