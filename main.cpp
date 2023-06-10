@@ -32,8 +32,9 @@ int findLength(Node* current, int num);
 //this is dijkstra's, exept I planned a redo of traveling saleman
 //so it is a monstrosity that needs to be deleted ... 
 void dijkstra(Node* traveled, Node* current, Node* destination,
-	      Node* edgeRoot, Node* nodeRoot, Node* start);
-//go look at it for a headache
+	      Node* edgeRoot, Node* nodeRoot, int currentPathLength,
+	      Node* start, Node* previousList, bool done);
+//go look at it for a headache, curentPathLength is not even used
 Node* wierdName(Node* destination, Node* current);
 //four coudting a path dikstra needs a retun that is wierd
 //since it is a ll not a table
@@ -195,12 +196,30 @@ int main() {
       //for coding this it will be a seperate recusrive thing
       //also will need its own root for a ll, (only use first to store)
       //also need a find length
+      Node* a = returnNode(thing1, nodeRoot);
+      Node* b = returnNode(thing2, nodeRoot);
+
+      //well start the apocalapse
+      /*
+	void dijkstra(Node* &traveled, Node* current, Node* destination,
+	              Node* edgeRoot, Node* nodeRoot, int currentPathLength,
+	              Node* start, Node* previousList, bool done);
+      //*/
+
+      dijkstra(NULL, b, a,
+	       edgeRoot, nodeRoot, 0,
+	       b, NULL, false);
+      //...
+      //...
+      //...
+
+      //welcome to absolute chaos
     }
   } 
 }
 
 
-void dijkstra(Node* &traveled, Node* current, Node* destination,
+void dijkstra(Node* traveled, Node* current, Node* destination,
 	      Node* edgeRoot, Node* nodeRoot, int currentPathLength,
 	      Node* start, Node* previousList, bool done) {
   //traveled is a root;
