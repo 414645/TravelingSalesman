@@ -29,11 +29,14 @@ Node* returnEdge(Node* firstNode, Node* secondNode, Node* current);
 //find length of LL
 int findLength(Node* current, int num);
 
-//this is dijkstra's, exept mostly just a redo of traveling saleman
+//this is dijkstra's, exept I planned a redo of traveling saleman
+//so it is a monstrosity that needs to be deleted ... 
 void dijkstra(Node* traveled, Node* current, Node* destination,
 	      Node* edgeRoot, Node* nodeRoot, Node* start);
-//traveled is going to be a root of a LL of traveled nodes;
-//I don't tink the node LL is needed but pass it in anyway
+//go look at it for a headache
+Node* wierdName(Node* destination, Node* current);
+//four coudting a path dikstra needs a retun that is wierd
+//since it is a ll not a table
 
 //prints
 void printNode(Node* current);
@@ -212,12 +215,34 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
   //worse then just doing the other seach but thats the assignment
   if (current == destination) {
     //cout the path
+    //wiername needs to retun node
+    //it will look at current->last to match destinaiton
+    //current would be traveled
+    Node* wierd = wierdName(destination, traveled);
+
+    if (wierd->getNumber() == -1) {
+      cout << "we could not find a path please check that you entered the correct numbers" << endl;
+    }
+    else {
+      cout << "we found a path" << endl;
+      cout << "it is " << wierd->getNumber() << " long" << endl;
+      cout << "path reads" << endl;
+      while(wierd != start) {
+	wierd = wierd->last;
+	cout << wierd->first->getNumber() << endl;
+      }
+    }
+    
     done = true;
   }
   else if(done == true) {
     //do nothing
   }
   else {
+    //special case where current = start
+    //initialize a traveled node with a 0 length
+
+    
     //go though everything connected to current and find shortest path
     //update that
     bool loop = true;
@@ -325,10 +350,10 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
     //also it snot edge ut pob a new variale bieng set up, drat
     //cp paste
     //we need to knwo number of edges
-    int c = 0;
-    int d = 0;
-    int b = findLength(edgeRoot, 0);
-    Node* temp = edgeRoot;
+    c = 0;
+    d = 0;
+    b = findLength(edgeRoot, 0);
+    temp = edgeRoot;
     //so we 1 find number of conenciotns 
     for(int a = 0; a < b; b++) {
       if(temp != NULL) {
@@ -340,7 +365,7 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
       temp = temp->getNext();
     }
 
-    Node* counter = NULL;
+    counter = NULL;
     while(loop == true) {
       //find an edge
       //see if it is shortest
@@ -369,7 +394,18 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
 	}
       }
       //no go to that one
-      
+      Node* chaos = new Node();
+      addThing(traveled, chaos, chaos);
+      //set vertex
+      if (current == edge->first) {
+	chaos->first = edge->last;
+      }
+      else {
+	chaos->first = edge->first;
+      }
+      //having saved the node go to it;
+      dijkstra(traveled, chaos, destination, edgeRoot, nodeRoot,
+	       currentPathLength, start, previousList, done);
     }
     //keep updating for all connectos
     //then go to the path
@@ -377,7 +413,21 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
   
 }
 
-  
+//wiername needs to retun node
+//it will look at current->last to match destinaiton
+//current would be traveled
+Node* wierdName(Node* destination, Node* current) {
+  //return a thing based on current->last
+  if (current != NULL) {
+    if (current->last == destination) {
+      return current;
+    }
+    return wierdName(destination, current->getNext());
+  }
+  else {
+    return NULL;
+  }
+}
 
 int findLength(Node* current, int num) {
   if (current != NULL) {
