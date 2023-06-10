@@ -22,6 +22,7 @@ bool findEdge(Node* firstNode, Node* secondNode, Node* current);
 void addThing(Node* node, Node* &root, Node* current);
 void removeThing(Node* node, Node* &root, Node* current, Node* previous);
 bool findNode(int nodeId, Node* current);
+bool findNode(Node* nodeId, Node* current);
 //same as find but retuns it, null in cant find
 Node* returnNode(int nodeId, Node* current);
 Node* returnEdge(Node* firstNode, Node* secondNode, Node* current);
@@ -217,68 +218,100 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
     //update that
     bool loop = true;
     int length = -1;
+
+    //we need to knwo number of edges
+    int c = 0;
+    int d = 0;
+    int b = findLength(edgeRoot, 0);
+    Node* temp = edgeRoot;
+    //so we 1 find number of conenciotns 
+    for(int a = 0; a < b; b++) {
+      if(temp != NULL) {
+	//is it connected?
+	if(temp->first == current || temp->last == current) {
+	  c++;
+	}
+      }
+      temp = temp->getNext();
+    }
+
+    Node* counter = NULL;
     while(loop == true) {
       //find an edge
       //see if it is shortest
       //one all edges are on edges we are done;
-      Node* temp = edgeRoot;
-      Node* edge = NULL;
-      int b = findLength(edgeRoot, 0);
-	for(int a = 0; a < b; b++) {
-	  if(temp != NULL) {
-	    //is it connected?
-	    if(temp->first == current || temp->last == current) {
-	      //is it shorter
-	      if(temp->getNumber() < length || length == -1) {
-		//save its length and it
-		length = temp->getNumber();
-		edge = temp;
-	    }
-	    }
-	  }
-	}
-	//end of for loop
-	//we have found shortest edge
-	//go update that
 
-	//also yes this is most definetly an abomination
-	//but in my defence I was planning on doing a find the shortest path
-	//so have nothign planned for a table
-	if(findNode(current->getNumber(), traveled) == false) {
-	  //lets make first the current vertex
-	  //last the previous
-	  //and num the distance
-	  
-	  //ad it to LL
-	  Node* chaos = new Node();
-	  addThing(traveled, chaos, chaos);
-	  //set vertex
-	  if (current == edge->first) {
-	    chaos->first = edge->last;
+      temp = edgeRoot;
+      Node* edge = NULL;
+
+      //go though the edges
+      for(int a = 0; a < b; b++) {
+	if(temp != NULL) {
+	  //is it connected?
+	  if(temp->first == current || temp->last == current) {
+	    //is it shorter
+	    if((temp->getNumber() < length || length == -1) &&
+	       findNode(temp, counter) != true) {
+	      //save its length and it
+	      length = temp->getNumber();
+	      edge = temp;
+	      //remove it form this search
+	      addThing(temp, counter, counter);
+	      
+	    }
 	  }
-	  else {
-	    chaos->first = edge->first;
-	  }
-	  //set previous
-	  //this is current since we did not actually move
-	  chaos->last = current;
-	  //set pathlength
-	  //this is just edge->getNumber + previous->getNumber
-	  chaos->setNumber(edge->getNumber() + chaos->last->getNumber());
+	  temp = temp->getNext();
+	}
+      }
+      //end of for loop
+      //we have found shortest edge
+      //go update that
+      
+      //also yes this is most definetly an abomination
+      //but in my defence I was planning on doing a find the shortest path
+      //so have nothign planned for a table
+      if(findNode(current->getNumber(), traveled) == false) {
+	//lets make first the current vertex
+	//last the previous
+	//and num the distance
+	
+	//ad it to LL
+	Node* chaos = new Node();
+	addThing(traveled, chaos, chaos);
+	//set vertex
+	if (current == edge->first) {
+	  chaos->first = edge->last;
 	}
 	else {
-	  cout << "update" << endl;
-	  //update its value (wierd case) for if its better
+	  chaos->first = edge->first;
 	}
-	
-	//now we need to check if we have gone thought all connections
-	//if so we exit the loop
-	
+	//set previous
+	//this is current since we did not actually move
+	chaos->last = current;
+	//set pathlength
+	//this is just edge->getNumber + previous->getNumber
+	chaos->setNumber(edge->getNumber() + chaos->last->getNumber());
+      }
+      else {
+	cout << "update" << endl;
+	//update its value (wierd case) for if its better
+      }
+      
+      //now we need to check if we have gone thought all connections
+      //if so we exit the loop
+      if (c == d) {
+	loop = false;
+      }
     }
     //end of while loop
-  
 
+    //now go to the next node
+    //find conneciton with least distance and go down that
+    //as long as other connecitosn have been done
 
+    //if (
+    
+    
     
     //keep updating for all connectos
     //then go to the path
@@ -359,6 +392,20 @@ bool findNode(int nodeId, Node* current) {
     return false;
   }
 }
+
+bool findNode(Node* nodeId, Node* current) {
+  //return if a node with that id exits (id should be uniqe);
+  if (current != NULL) {
+    if (current == nodeId) {
+      return true;
+    }
+    return findNode(nodeId, current->getNext());
+  }
+  else {
+    return false;
+  }
+}
+
 
 Node* returnNode(int nodeId, Node* current) {
   //return if a node with that id exits (id should be uniqe);
