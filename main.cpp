@@ -199,7 +199,7 @@ int main() {
 
 void dijkstra(Node* &traveled, Node* current, Node* destination,
 	      Node* edgeRoot, Node* nodeRoot, int currentPathLength,
-	      Node* start) {
+	      Node* start, Node* previousList, bool done) {
   //traveled is a root;
   //Anywasy psudocode here:
   //start by visting thing with shortest path
@@ -212,6 +212,10 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
   //worse then just doing the other seach but thats the assignment
   if (current == destination) {
     //cout the path
+    done = true;
+  }
+  else if(done == true) {
+    //do nothing
   }
   else {
     //go though everything connected to current and find shortest path
@@ -304,15 +308,68 @@ void dijkstra(Node* &traveled, Node* current, Node* destination,
       }
     }
     //end of while loop
-
+    
     //now go to the next node
     //find conneciton with least distance and go down that
     //as long as other connecitosn have been done
+    //go look at previousList, if previous could go to any that is in list do
+    //that
+    
+    //if (current == start) {
+    //go no matter what
+    //}
 
-    //if (
-    
-    
-    
+    //you know what just go to edge and it should magicaly sort iself out
+    //that or I have a massive headache trying to code a other way that is
+    //not another monstraosity
+    //also it snot edge ut pob a new variale bieng set up, drat
+    //cp paste
+    //we need to knwo number of edges
+    int c = 0;
+    int d = 0;
+    int b = findLength(edgeRoot, 0);
+    Node* temp = edgeRoot;
+    //so we 1 find number of conenciotns 
+    for(int a = 0; a < b; b++) {
+      if(temp != NULL) {
+	//is it connected?
+	if(temp->first == current || temp->last == current) {
+	  c++;
+	}
+      }
+      temp = temp->getNext();
+    }
+
+    Node* counter = NULL;
+    while(loop == true) {
+      //find an edge
+      //see if it is shortest
+      //one all edges are on edges we are done;
+
+      temp = edgeRoot;
+      Node* edge = NULL;
+
+      //go though the edges
+      for(int a = 0; a < b; b++) {
+	if(temp != NULL) {
+	  //is it connected?
+	  if(temp->first == current || temp->last == current) {
+	    //is it shorter
+	    if((temp->getNumber() < length || length == -1) &&
+	       findNode(temp, counter) != true) {
+	      //save its length and it
+
+	      //length = temp->getNumber();
+	      //edge = temp;
+	      //remove it form this search
+	      addThing(temp, counter, counter);
+	      
+	    }
+	  }
+	  temp = temp->getNext();
+	}
+      }
+    }
     //keep updating for all connectos
     //then go to the path
   }
