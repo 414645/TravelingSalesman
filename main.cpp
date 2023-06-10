@@ -55,6 +55,8 @@ void nodeDelAlert(Node* toDel, Node* current, Node* &edgeRoot, Node* &nodeRoot);
 
 int main() {
   cout << "hello world" << endl;
+  cout << "currently dijstras seg faults" << endl;
+  cout << "... alot" << endl;
   bool quit = false;
   Node* edgeRoot = NULL;
   Node* nodeRoot = NULL;
